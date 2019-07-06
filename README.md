@@ -6,7 +6,7 @@ Since I am using this functionality for some time now, I thought I might as well
 
 ## Example
 ```python
-from mini-yahoo-finance-api import get_stock_dataframe
+from mini_yahoo_finance_api import get_stock_dataframe
 
 df = get_stock_dataframe(stock_name='ADS.DE',
 			 start_date='01-01-2018',
