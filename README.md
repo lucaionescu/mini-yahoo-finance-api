@@ -15,7 +15,10 @@ df = get_stock_dataframe(stock_name='ADS.DE',
 ```
 
 ## Usage
-Accepted values for `interval` are: `1d` (default), `1wk`, `1mo`.
+Accepted values for `interval` are: 
+- `1d` (default)
+- `1wk`
+- `1mo`
 
 ## Installation
 ```
