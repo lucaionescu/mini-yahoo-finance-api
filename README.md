@@ -1,4 +1,4 @@
-# MInimal Yahoo! Finance API
+# Minimal Yahoo! Finance API
 
 A minimal library for downloading stock data from Yahoo! Finance into a Pandas DataFrame.
 
