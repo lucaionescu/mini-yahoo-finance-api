@@ -34,5 +34,6 @@ pip install mini-yahoo-finance-api
 - remove BeautifulSoup dependency
 - bulk download of multiple stocks using multithreading
 - add support for more output formats
+- make today the default end day
 
 Suggestions or problems? Don't hesitate to contact me or open a pull request!
