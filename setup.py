@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mini_yahoo_finance_api',
-      version='0.0.2',
+      version='0.0.3',
       description='Download and store historical stock data to a Pandas dataframe using the Yahoo! Finance API.',
       url='https://github.com/lucaionescu/mini-yahoo-finance-api.git',
       author='Luca Ionescu',
