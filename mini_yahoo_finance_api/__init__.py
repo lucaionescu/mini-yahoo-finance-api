@@ -31,7 +31,7 @@ def _create_pandas_df(website_text):
 
 
 def _get_crumb_and_cookies(stock_name):
-    url = 'https://finance.yahoo.com/quote/{}/history?p={}'.format(stock_name, stock_name)
+    url = f'https://finance.yahoo.com/quote/{stock_name}/history?p={stock_name}'
     r = requests.get(url, headers=_HEADER)
     soup = BeautifulSoup(r.text, 'lxml')
     cookies = r.cookies
@@ -58,10 +58,7 @@ def get_stock_dataframe(stock_name, start_date, end_date, interval='1d'):
 
     crumb, cookies = _get_crumb_and_cookies(stock_name)
 
-    url = 'https://query1.finance.yahoo.com/v7/finance/download/' \
-        '{stock_name}?period1={start_date}&period2={end_date}&interval={interval}&events=history&crumb={crumb}'
-    url = url.format(stock_name=stock_name, start_date=start_date,
-                     end_date=end_date, interval=interval, crumb=crumb)
+    url = f'https://query1.finance.yahoo.com/v7/finance/download/{stock_name}?period1={start_date}&period2={end_date}&interval={interval}&events=history&crumb={crumb}'
     r = requests.get(url, headers=_HEADER, cookies=cookies)
     df = _create_pandas_df(r.text)
     return df
