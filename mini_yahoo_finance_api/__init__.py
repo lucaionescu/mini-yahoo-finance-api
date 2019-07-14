@@ -7,7 +7,7 @@ Pandas dataframe using the Yahoo! Finance API.
 
 import io
 import re
-from datetime import datetime
+from datetime import date, datetime
 from time import mktime
 
 import pandas as pd
@@ -43,9 +43,9 @@ def _parse_date_to_unix(date):
     return int(mktime(date.timetuple()))
 
 
-def get_stock_dataframe(stock_name, start_date, end_date, interval='1d'):
-    start_date = datetime.strptime(start_date, '%d-%m-%Y')
-    end_date = datetime.strptime(end_date, '%d-%m-%Y')
+def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
+    start_date = datetime.strptime(start_date, '%d-%m-%Y').date()
+    end_date = datetime.strptime(end_date, '%d-%m-%Y').date() if end_date else date.today()
 
     if start_date > end_date:
         raise ValueError('start_date is has a more recent value than end_date.')
