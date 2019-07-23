@@ -6,7 +6,7 @@ Since I am using this functionality for some time now, I thought I might as well
 
 ## Example
 ```python
-from mini_yahoo_finance_api import get_stock_df
+from mini_yahoo_finance import get_stock_df
 
 df = get_stock_df(stock_name='ADS.DE',
 		  start_date='01-01-2018',
@@ -24,7 +24,7 @@ If no `end_date` is provided, the current date will be used.
 
 ## Installation
 ```
-pip install mini-yahoo-finance-api
+pip install mini-yahoo-finance
 ```
 
 ## Requirements

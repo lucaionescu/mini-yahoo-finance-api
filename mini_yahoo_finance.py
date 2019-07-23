@@ -15,12 +15,13 @@ import requests
 from bs4 import BeautifulSoup
 
 
-_HEADER = {'Connection': 'keep-alive',
-           'Expires': '-1',
-           'Upgrade-Insecure-Requests': '1',
-           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) \
-            AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36'
-           }
+_HEADER = {
+    'Connection': 'keep-alive',
+    'Expires': '-1',
+    'Upgrade-Insecure-Requests': '1',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) \
+            AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36',
+}
 
 
 def _create_pandas_df(website_text):
@@ -39,13 +40,15 @@ def _get_crumb_and_cookies(stock_name):
     return (crumb, cookies)
 
 
-def _parse_date_to_unix(date):
-    return int(mktime(date.timetuple()))
+def _parse_date_to_unix(date_):
+    return int(mktime(date_.timetuple()))
 
 
 def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
     start_date = datetime.strptime(start_date, '%d-%m-%Y').date()
-    end_date = datetime.strptime(end_date, '%d-%m-%Y').date() if end_date else date.today()
+    end_date = (
+        datetime.strptime(end_date, '%d-%m-%Y').date() if end_date else date.today()
+    )
 
     if start_date > end_date:
         raise ValueError('start_date is has a more recent value than end_date.')

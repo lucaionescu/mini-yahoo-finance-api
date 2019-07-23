@@ -1,7 +1,11 @@
+#!/usr/bin/env
+
 from setuptools import setup
 
-setup(name='mini_yahoo_finance_api',
-      version='0.0.4',
+import mini_yahoo_finance
+
+setup(name='mini_yahoo_finance',
+      version='0.0.5',
       author='Luca Ionescu',
       url='https://github.com/lucaionescu/mini-yahoo-finance-api.git',
       author_email='ionescu@mailbox.org',
@@ -10,7 +14,7 @@ setup(name='mini_yahoo_finance_api',
       long_description_content_type='text/markdown',
       license='MIT',
       keywords='yahoo finance stocks market',
-      packages=['mini_yahoo_finance_api'],
+      py_modules=['mini_yahoo_finance'],
       install_requires=[
           'BeautifulSoup',
           'pandas',
