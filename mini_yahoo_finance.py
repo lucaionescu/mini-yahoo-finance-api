@@ -5,7 +5,6 @@ Download and store historical stock data to a
 Pandas dataframe using the Yahoo! Finance API.
 """
 
-import io
 import re
 from datetime import date, datetime
 from time import mktime
@@ -15,7 +14,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-_HEADER = {
+HEADER = {
     'Connection': 'keep-alive',
     'Expires': '-1',
     'Upgrade-Insecure-Requests': '1',
@@ -25,15 +24,39 @@ _HEADER = {
 
 
 def _create_pandas_df(website_text):
+    """Parse the scraped text to a
+    Pandas Dataframe.
+
+    Parameters
+    ----------
+    website_text : str
+
+    Returns
+    -------
+    pd.core.frame.DataFrame
+    """
     records = website_text.split('\n')[:-1]
     records = [(record.split(',')) for record in records]
     df = pd.DataFrame(records[1:], columns=records[0])
     return df
 
 
-def _get_crumb_and_cookies(stock_name):
-    url = f'https://finance.yahoo.com/quote/{stock_name}/history?p={stock_name}'
-    r = requests.get(url, headers=_HEADER)
+def _get_crumb_and_cookies(stock):
+    """Collect the crumb and cookies needed
+    for scraping
+
+    Parameters
+    ----------
+    stock : str
+        Stock name.
+
+    Returns
+    -------
+    tuple
+        Contains the crumb and cookies string.
+    """
+    url = f'https://finance.yahoo.com/quote/{stock}/history?p={stock}'
+    r = requests.get(url, headers=HEADER)
     soup = BeautifulSoup(r.text, 'lxml')
     cookies = r.cookies
     crumb = re.findall('"CrumbStore":{"crumb":"(.+?)"}', str(soup))[0]
@@ -41,10 +64,48 @@ def _get_crumb_and_cookies(stock_name):
 
 
 def _parse_date_to_unix(date_):
+    """Parse a date string to an integer.
+
+    Parameters
+    ----------
+    date_ : string
+        Date string following the format DD-MM-YYYY
+
+    Returns
+    -------
+    int
+        Date represented as integer
+    """
     return int(mktime(date_.timetuple()))
 
 
 def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
+    """Organizes the scraping process.
+
+    Parameters
+    ----------
+    stock_name : string
+        Stock name.
+    start_date : string
+        Start date.
+    end_date : string, optional
+        End date. If not given, the default is today.
+    interval : string, optional
+        Stock value interval, by default '1d'.
+
+    Returns
+    -------
+    pd.core.frame.DataFrame
+        Pandas DataFrame containg the stock values.
+
+    Raises
+    ------
+    ValueError
+        Is raised when the start_date is after the end_date.
+    ValueError
+        Is raised when interval is not one of the supported values:
+        [1d, 1wk, 1mo].
+    """
     start_date = datetime.strptime(start_date, '%d-%m-%Y').date()
     end_date = (
         datetime.strptime(end_date, '%d-%m-%Y').date() if end_date else date.today()
@@ -62,6 +123,7 @@ def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
     crumb, cookies = _get_crumb_and_cookies(stock_name)
 
     url = f'https://query1.finance.yahoo.com/v7/finance/download/{stock_name}?period1={start_date}&period2={end_date}&interval={interval}&events=history&crumb={crumb}'
-    r = requests.get(url, headers=_HEADER, cookies=cookies)
+    r = requests.get(url, headers=HEADER, cookies=cookies)
     df = _create_pandas_df(r.text)
+
     return df
