@@ -7,7 +7,7 @@ Pandas dataframe using the Yahoo! Finance API.
 
 import re
 from datetime import date, datetime
-from time import mktime
+from time import mktime, sleep
 
 import pandas as pd
 import requests
@@ -38,6 +38,7 @@ def _create_pandas_df(website_text):
     records = website_text.split('\n')[:-1]
     records = [(record.split(',')) for record in records]
     df = pd.DataFrame(records[1:], columns=records[0])
+    print(df.head(2))
     return df
 
 
@@ -79,7 +80,7 @@ def _parse_date_to_unix(date_):
     return int(mktime(date_.timetuple()))
 
 
-def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
+def get_stock_df(stock_name, start_date, end_date=None, interval='1d', max_retries=3):
     """Organizes the scraping process.
 
     Parameters
@@ -92,6 +93,8 @@ def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
         End date. If not given, the default is today.
     interval : string, optional
         Stock value interval, by default '1d'.
+    max_retries : integer, optional
+        Number of retries of failed requests, by default '3'.
 
     Returns
     -------
@@ -115,15 +118,26 @@ def get_stock_df(stock_name, start_date, end_date=None, interval='1d'):
         raise ValueError('start_date is has a more recent value than end_date.')
 
     if interval not in ['1d', '1wk', '1mo']:
-        raise ValueError('unknown interval. Accepted values are [1d, 1wk, 1mo]')
+        raise ValueError('unknown interval. Accepted values are [1d, 1wk, 1mo].')
+
+    if not isinstance(max_retries, int) or max_retries <= 0:
+        raise ValueError(
+            'invalid value of max_retries. Accepted values are integers > 0.'
+        )
 
     start_date = _parse_date_to_unix(start_date)
     end_date = _parse_date_to_unix(end_date)
 
-    crumb, cookies = _get_crumb_and_cookies(stock_name)
+    for i in range(max_retries):
+        crumb, cookies = _get_crumb_and_cookies(stock_name)
 
-    url = f'https://query1.finance.yahoo.com/v7/finance/download/{stock_name}?period1={start_date}&period2={end_date}&interval={interval}&events=history&crumb={crumb}'
-    r = requests.get(url, headers=HEADER, cookies=cookies)
-    df = _create_pandas_df(r.text)
+        if len(crumb) != 11:
+            sleep(i * 5)
+            continue
+
+        url = f'https://query1.finance.yahoo.com/v7/finance/download/{stock_name}?period1={start_date}&period2={end_date}&interval={interval}&events=history&crumb={crumb}'
+        r = requests.get(url, headers=HEADER, cookies=cookies)
+        df = _create_pandas_df(r.text)
+        break
 
     return df
