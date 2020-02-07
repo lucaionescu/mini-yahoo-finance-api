@@ -12,7 +12,7 @@ def get_readme():
 
 setup(
     name='mini_yahoo_finance',
-    version='0.0.6',
+    version='0.0.7',
     author='Luca Ionescu',
     url='https://github.com/lucaionescu/mini-yahoo-finance-api.git',
     author_email='ionescu@mailbox.org',
