@@ -25,7 +25,9 @@ If no `end_date` is provided, the current date will be used.
 
 ## Installation
 ```
-pip install mini-yahoo-finance
+git clone https://github.com/lucaionescu/mini-yahoo-finance-api.git
+cd mini-yahoo-finance-api/
+pip install .
 ```
 
 ## Requirements
