@@ -9,10 +9,10 @@ Since I am using this functionality for some time now, I thought I might as well
 from mini_yahoo_finance import get_stock_df
 
 df = get_stock_df('ADS.DE',
-				  '01-01-2018',
-				  end_date='31-01-2018',
-				  interval='1d',
-				  max_retries=3)
+		  '01-01-2018',
+		  end_date='31-01-2018',
+		  interval='1d',
+		  max_retries=3)
 ```
 
 ## Usage
