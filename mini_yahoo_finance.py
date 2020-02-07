@@ -38,7 +38,6 @@ def _create_pandas_df(website_text):
     records = website_text.split('\n')[:-1]
     records = [(record.split(',')) for record in records]
     df = pd.DataFrame(records[1:], columns=records[0])
-    print(df.head(2))
     return df
 
 
