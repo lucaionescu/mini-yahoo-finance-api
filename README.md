@@ -1,5 +1,9 @@
 # Minimal Yahoo! Finance API
 
+
+![PyPI](https://img.shields.io/pypi/v/mini-yahoo-finance?style=plastic)
+
+
 A minimal library for downloading stock data from Yahoo! Finance into a Pandas DataFrame.
 
 Since I am using this functionality for some time now, I thought I might as well write up this code nicely into a library and make it available.
