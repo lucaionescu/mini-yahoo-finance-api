@@ -40,4 +40,4 @@ pip install .
 - Pandas
 - Requests
 
-Suggestions or problems? Don't hesitate to contact me or open a pull request!
+Suggestions or problems? Don't hesitate to open a pull request!
