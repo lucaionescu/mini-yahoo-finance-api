@@ -6,7 +6,7 @@ Pandas dataframe using the Yahoo! Finance API.
 """
 
 import re
-from datetime import date, datetime
+from datetime import date
 from time import mktime, sleep
 
 import pandas as pd
@@ -86,9 +86,9 @@ def get_stock_df(stock_name, start_date, end_date=None, interval='1d', max_retri
     ----------
     stock_name : string
         Stock name.
-    start_date : string
+    start_date : datetime.date
         Start date.
-    end_date : string, optional
+    end_date : datetime.date, optional
         End date. If not given, the default is today.
     interval : string, optional
         Stock value interval, by default '1d'.
@@ -108,10 +108,8 @@ def get_stock_df(stock_name, start_date, end_date=None, interval='1d', max_retri
         Is raised when interval is not one of the supported values:
         [1d, 1wk, 1mo].
     """
-    start_date = datetime.strptime(start_date, '%d-%m-%Y').date()
-    end_date = (
-        datetime.strptime(end_date, '%d-%m-%Y').date() if end_date else date.today()
-    )
+    if end_date is None:
+        end_date = date.today()
 
     if start_date > end_date:
         raise ValueError('start_date is has a more recent value than end_date.')
